@@ -1,0 +1,12 @@
+app = "binance-spot-proxy"
+
+[build]
+
+[env]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+
+[experimental]
+  auto_rollback = true
