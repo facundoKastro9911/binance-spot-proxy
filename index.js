@@ -5,15 +5,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/:pair", async (req, res) => {
-    const pair = req.params.pair.toUpperCase(); // ej: BTCUSDT
+    const pair = req.params.pair.toUpperCase();
     const url = `https://api.binance.com/api/v3/ticker/bookTicker?symbol=${pair}`;
+
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Binance API error");
         const data = await response.json();
-        res.json(data);
+
+        if (!response.ok) {
+            return res.status(response.status).json({
+                error: `Binance API returned ${response.status}`,
+                details: data
+            });
+        }
+
+        return res.json(data);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
     }
 });
 
