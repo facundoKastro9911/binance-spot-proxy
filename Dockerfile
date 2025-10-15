@@ -1,20 +1,20 @@
-# Usa una imagen oficial de Node.js
-FROM node:18
+# Usa una imagen oficial y ligera de Node.js
+FROM node:18-alpine
 
-# Directorio de trabajo
+# Define el directorio de trabajo
 WORKDIR /app
 
-# Copia package.json y package-lock.json
+# Copia package.json y package-lock.json (si existe)
 COPY package*.json ./
 
-# Instala las dependencias
-RUN npm install
+# Instala solo las dependencias necesarias
+RUN npm install --production
 
-# Copia el resto del código
+# Copia el resto del código fuente
 COPY . .
 
 # Expone el puerto que usa la app
 EXPOSE 3000
 
-# Comando para arrancar
-CMD [ "node", "index.js" ]
+# Comando de inicio
+CMD ["npm", "start"]
